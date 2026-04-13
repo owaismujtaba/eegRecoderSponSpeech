@@ -1,0 +1,4 @@
+pylsl
+pyserial
+pandas
+Pillow

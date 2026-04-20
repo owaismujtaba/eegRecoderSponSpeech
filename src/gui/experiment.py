@@ -53,7 +53,7 @@ class ExperimentScreen(tk.Frame):
         self.image_label.grid_remove()
         self.fixation_label.grid()
         self._fixation_timer = self.after(
-            int(cfg.FIXATION_TIME * 1000), self.show_image
+            int(cfg.FIXATION_TIME), self.show_image
         )
 
     def show_image(self):

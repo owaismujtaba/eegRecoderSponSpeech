@@ -12,17 +12,6 @@ import serial.tools.list_ports
 import config as cfg
 
 
-def list_available_ports():
-    ports = serial.tools.list_ports.comports()
-    if not ports:
-        print("No serial ports detected.")
-    else:
-        print("Available serial ports:")
-        for port in ports:
-            print(f"  {port.device:20s} — {port.description}")
-    print()
-
-
 def monitor(port_name):
     try:
         ser = serial.Serial(port_name, baudrate=128000, timeout=0)
@@ -52,7 +41,6 @@ def monitor(port_name):
 
 
 if __name__ == "__main__":
-    list_available_ports()
 
     if cfg.TRIGGER_PORT:
         print(f"Configured port: {cfg.TRIGGER_PORT}")

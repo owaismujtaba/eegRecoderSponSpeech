@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.font as tkfont
 import config as cfg
 
+from src.utils import Markers
 
 class InstructionsScreen(tk.Frame):
     def __init__(self, parent, controller):
@@ -31,6 +32,7 @@ class InstructionsScreen(tk.Frame):
         self.unbind_all("<Escape>")
 
     def start_experiment(self, event=None):
+        self.controller.send_marker(Markers.START_EXPERIMENT)
         self.controller.show_frame("ExperimentScreen")
 
     def rest(self, event=None):

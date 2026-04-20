@@ -13,14 +13,14 @@ class Markers(Enum):
 
 class MarkerConfig:
     MAPPING = {
-        Markers.START_EXPERIMENT:          (255, 'StartExperiment'),
-        Markers.END_EXPERIMENT:            (232, 'EndExperiment'),
-        Markers.START_FIXATION:      (209, 'StartFixation'),
-        Markers.END_FIXATION:            (196, 'EndFixation'),
-        Markers.START_RESTING:       (163, 'StartResting'),
-        Markers.END_RESTING:         (150, 'EndResting'),
-        Markers.START_DISPLAY_IMAGE:   (140, 'StartDisplayImage'),
-        Markers.END_DISPLAY_IMAGE: (117, 'EndDisplayImage'),
+        Markers.START_EXPERIMENT:          (250, 'StartExperiment'),
+        Markers.END_EXPERIMENT:            (230, 'EndExperiment'),
+        Markers.START_FIXATION:      (200, 'StartFixation'),
+        Markers.END_FIXATION:            (190, 'EndFixation'),
+        Markers.START_RESTING:       (100, 'StartResting'),
+        Markers.END_RESTING:         (90, 'EndResting'),
+        Markers.START_DISPLAY_IMAGE:   (150, 'StartDisplayImage'),
+        Markers.END_DISPLAY_IMAGE: (140, 'EndDisplayImage'),
     }
 
     @staticmethod

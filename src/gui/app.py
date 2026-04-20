@@ -1,6 +1,5 @@
 import tkinter as tk
 import serial
-import tkinter.font as tkfont
 from pylsl import local_clock
 import pandas as pd
 from pylsl import StreamInfo, StreamOutlet
@@ -31,6 +30,7 @@ class App(tk.Tk):
 
         self.current_frame = None
         self.previous_frame = None
+        self.last_marker_time = 0
 
         self.maker_details = []
         self.images_details = []
@@ -72,13 +72,19 @@ class App(tk.Tk):
             frame.on_show()
 
     def run_app(self):
-        self.send_marker(Markers.START_EXPERIMENT)
+        #self.send_marker(Markers.START_EXPERIMENT)
         self.show_frame("MainPage")
 
     def send_marker(self, marker, image_name=None):
         marker_cfg = MarkerConfig()
-        time_data = local_clock()
-        self.time_details.append(time_data)
+        current_time = local_clock()
+        time_since_last_ms = (current_time - self.last_marker_time) * 1000
+        if time_since_last_ms < cfg.MIN_MARKER_INTERVAL:
+            delay_ms = int(cfg.MIN_MARKER_INTERVAL - time_since_last_ms)
+            self.after(delay_ms, lambda: self.send_marker(marker, image_name))
+            return
+        self.last_marker_time = current_time
+        self.time_details.append(current_time)
         self.maker_details.append(marker)
         serial_cmd, lsl_base_marker = marker_cfg.get_command(marker)
         if image_name:
@@ -89,7 +95,7 @@ class App(tk.Tk):
         if self.serial_port:
             self.serial_port.write(serial_cmd)
         else:
-            print(f"[{time_data:.3f}]  serial={serial_cmd.strip()} | lsl={lsl_base_marker}")
+            print(f"[{current_time:.3f}]  serial={serial_cmd.strip()} | lsl={lsl_base_marker}")
         self.outlet.push_sample([lsl_base_marker])
 
     def quit(self):
@@ -98,10 +104,15 @@ class App(tk.Tk):
             'Marker': self.maker_details,
             'Images': self.images_details,
         }
-
         df = pd.DataFrame(data)
         print(df)
+        self.send_marker(Markers.END_EXPERIMENT)
         df.to_csv('info.csv', index=False)
+
+
+        if hasattr(self, 'ser') and self.ser.is_open:
+            self.ser.flush()
+            self.ser.close()
 
         self.destroy()
 

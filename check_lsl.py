@@ -1,11 +1,3 @@
-"""
-Run this script in a separate terminal while the experiment is running.
-It will print every marker as it arrives from the LSL stream.
-
-Usage:
-    python check_lsl.py
-"""
-
 from pylsl import StreamInlet, resolve_streams
 
 print("Searching for LSL marker stream...")
